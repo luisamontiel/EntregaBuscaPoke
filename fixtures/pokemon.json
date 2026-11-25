@@ -1,0 +1,29 @@
+
+{
+  "pikachu": {
+    "id": 25,
+    "name": "pikachu",
+    "types": ["electric"],
+    "abilities": ["static", "lightning-rod"],
+    "statsCount": 6
+  },
+  "charizard": {
+    "id": 6,
+    "name": "charizard",
+    "types": ["fire", "flying"],
+    "abilities": ["blaze", "solar-power"],
+    "statsCount": 6
+  },
+  "bulbasaur": {
+    "id": 1,
+    "name": "bulbasaur",
+    "types": ["grass", "poison"],
+    "abilities": ["overgrow", "chlorophyll"],
+    "statsCount": 6
+  },
+  "pokemonInexistente": {
+    "name": "pokemone",
+    "error": "Pokémon no encontrado",
+    "statusCode": 404
+  }
+}

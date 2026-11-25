@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poké-Busqueda</title>
+
+
+</head>
+
+<body>
+
+<div>
+
+  <h1>Busqueda</h1>
+
+  <p>Busca un Pokémon por nombre o ID</p>
+
+  <input type="text" id="pokemonSearch" placeholder="Ejemplo: pikachu o 25">
+
+  <button id="search">
+    Buscar Pokémon
+  </button>
+
+  <div id="result"></div>
+
+</div>
+
+<script>
+
+const input = document.getElementById("pokemonSearch");
+const btn = document.getElementById("search");
+const result = document.getElementById("result");
+
+btn.addEventListener("click", searchPokemon);
+
+input.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    searchPokemon();
+  }
+});
+
+async function searchPokemon() {
+
+  const busqueda = input.value.trim().toLowerCase();
+
+  if (!busqueda) {
+    result.textContent = "Introduce un nombre o ID";
+    return;
+  }
+
+  result.textContent = "Buscando Pokémon...";
+
+  try {
+
+    const response = await fetch(
+      `https://pokeapi.co/api/v2/pokemon/${encodeURIComponent(busqueda)}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Pokémon no encontrado");
+    }
+
+    const pokemon = await response.json();
+
+    const types = pokemon.types
+      .map(item => item.type.name)
+      .join(", ");
+
+    const abilities = pokemon.abilities
+  .map(item => item.ability.name)
+  .join(", ");
+  
+    const stats = pokemon.stats
+      .map(item =>
+        `<li>${item.stat.name}: ${item.base_stat}</li>`
+      )
+      .join("");
+
+    
+
+    result.innerHTML = `
+
+      <div>
+
+        <h2 id="pokemon-name">${pokemon.name}</h2>
+
+        <div>
+
+          <h3>Información general</h3>
+
+          <p id="pokemon-id">ID: ${pokemon.id}</p>
+
+          
+        </div>
+
+        <div>
+
+          <h3>Tipos</h3>
+          <p id="pokemon-types">${types}</p>
+
+        </div>
+
+        <div>
+
+          <h3>Habilidades</h3>
+
+          <p id="pokemon-abilities">${abilities }</p>
+
+        </div>
+
+        <div>
+
+          <h3>Estadísticas</h3>
+
+          <ul id="pokemon-stats">${stats}</ul>
+
+        </div>
+
+        
+
+      </div>
+    `;
+
+  } catch (error) {
+
+    result.innerHTML = `
+      <p id="pokemon-error">
+        ${error.message}
+      </p>
+    `;
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
